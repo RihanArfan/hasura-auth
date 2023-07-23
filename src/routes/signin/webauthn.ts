@@ -138,13 +138,15 @@ export const signInVerifyWebauthnHandler: RequestHandler<
 
   let verification;
   try {
-    verification = verifyAuthenticationResponse({
+    verification = await verifyAuthenticationResponse({
       credential,
       expectedChallenge,
       expectedOrigin: ENV.AUTH_WEBAUTHN_RP_ORIGINS,
       expectedRPID: getWebAuthnRelyingParty(),
       authenticator: securityKeyDevice,
-      requireUserVerification: true,
+      advancedFIDOConfig: {
+        userVerification: 'preferred',
+      },
     });
   } catch (e) {
     const error = e as Error;
