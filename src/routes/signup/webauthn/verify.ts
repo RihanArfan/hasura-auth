@@ -10,7 +10,7 @@ import {
 } from '@/utils';
 import { RequestHandler } from 'express';
 
-import { RegistrationCredentialJSON } from '@simplewebauthn/typescript-types';
+import { RegistrationResponseJSON } from '@simplewebauthn/typescript-types';
 import { Joi, redirectTo } from '@/validation';
 import {
   EMAIL_TYPES,
@@ -20,7 +20,7 @@ import {
 import { sendEmail } from '@/email';
 
 export type SignUpVerifyWebAuthnRequestBody = {
-  credential: RegistrationCredentialJSON;
+  credential: RegistrationResponseJSON;
   options: Pick<UserRegistrationOptionsWithRedirect, 'redirectTo'> & {
     nickname?: string;
   };

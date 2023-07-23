@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import {
   PublicKeyCredentialCreationOptionsJSON,
-  RegistrationCredentialJSON,
+  RegistrationResponseJSON,
 } from '@simplewebauthn/typescript-types';
 import { generateRegistrationOptions } from '@simplewebauthn/server';
 
@@ -63,7 +63,7 @@ export const addSecurityKeyHandler: RequestHandler<
 };
 
 export type VerifySecurityKeyRequestBody = {
-  credential: RegistrationCredentialJSON;
+  credential: RegistrationResponseJSON;
   nickname?: string;
 };
 

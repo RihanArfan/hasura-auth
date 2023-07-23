@@ -14,7 +14,7 @@ import {
   verifyAuthenticationResponse,
 } from '@simplewebauthn/server';
 import {
-  AuthenticationCredentialJSON,
+  AuthenticationResponseJSON,
   PublicKeyCredentialRequestOptionsJSON,
 } from '@simplewebauthn/typescript-types';
 import { email, Joi } from '@/validation';
@@ -77,7 +77,7 @@ export const signInWebauthnHandler: RequestHandler<
 };
 
 export type SignInVerifyWebAuthnRequestBody = {
-  credential: AuthenticationCredentialJSON;
+  credential: AuthenticationResponseJSON;
   email: string;
 };
 
@@ -139,7 +139,7 @@ export const signInVerifyWebauthnHandler: RequestHandler<
   let verification;
   try {
     verification = await verifyAuthenticationResponse({
-      credential,
+      response: credential,
       expectedChallenge,
       expectedOrigin: ENV.AUTH_WEBAUTHN_RP_ORIGINS,
       expectedRPID: getWebAuthnRelyingParty(),

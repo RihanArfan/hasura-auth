@@ -3,7 +3,7 @@ import {
   VerifiedRegistrationResponse,
   verifyRegistrationResponse,
 } from '@simplewebauthn/server';
-import { RegistrationCredentialJSON } from '@simplewebauthn/typescript-types';
+import { RegistrationResponseJSON } from '@simplewebauthn/typescript-types';
 
 import { ENV } from './env';
 import { gqlSdk } from './gql-sdk';
@@ -23,14 +23,14 @@ export const getCurrentChallenge = async (id: string) => {
 
 export const verifyWebAuthnRegistration = async (
   { id }: Pick<User, 'id'>,
-  credential: RegistrationCredentialJSON,
+  credential: RegistrationResponseJSON,
   nickname?: string
 ) => {
   const expectedChallenge = await getCurrentChallenge(id);
   let verification: VerifiedRegistrationResponse;
   try {
     verification = await verifyRegistrationResponse({
-      credential,
+      response: credential,
       expectedChallenge,
       expectedOrigin: ENV.AUTH_WEBAUTHN_RP_ORIGINS,
       expectedRPID: getWebAuthnRelyingParty(),
@@ -56,9 +56,9 @@ export const verifyWebAuthnRegistration = async (
   } = registrationInfo;
 
   const newSecurityKey: AuthUserSecurityKeys_Insert_Input = {
-    credentialId: credentialId.toString('base64url'),
+    credentialId: Buffer.from(credentialId).toString('base64url'),
     credentialPublicKey: Buffer.from(
-      '\\x' + credentialPublicKey.toString('hex')
+      '\\x' + Buffer.from(credentialPublicKey).toString('hex')
     ).toString(),
     counter,
     nickname,
